@@ -9,7 +9,7 @@ from bibliopixel.drivers.LPD8806 import *
 
 
 WAIT_INTERVAL = 0.1
-NUMBER_OF_LED = 96
+NUMBER_OF_LED = 32
 
 class SunriseSimulator(multiprocessing.Process):
 	"""This class is to interact with LPD8806 digital RGB strip simulating sunrise effect"""
