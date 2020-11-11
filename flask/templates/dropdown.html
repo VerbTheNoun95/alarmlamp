@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dropdown Example</title>
+</head>
+<body>
+  <p>What time would you like to wake up?</p>
+  <form id="form1" action="/time" method="POST" enctype="multipart/form-data">
+    <select id="hourSelect" name = "hours">
+        {% for hour in hours %}
+        <option value="{{ hour }}" SELECTED>{{ hour }}</option>
+        {% endfor %}
+    </select>
+    <select id="hourSelect" name = "minutes">
+      {% for minute in minutes %}
+      <option value="{{ minute }}" SELECTED>{{ minute }}</option>
+      {% endfor %}
+  </select>
+    <input type="submit" value="Submit">
+  </form>
+  <div id="result">
+    <p>
+      {% if hour is defined and minute is defined %}
+        Waking you up at {{ hour }}:{{ minute }}
+      {% endif %}
+    </p>
+  </div>
+</body>
+</html>

@@ -1,0 +1,11 @@
+{% block content %}
+<select name="list_status">
+
+    {% for each in form %}
+    
+    <option value="{{each}}">{{each}}</option>
+    
+    {% endfor %}
+    
+</select>
+{% endblock %}
