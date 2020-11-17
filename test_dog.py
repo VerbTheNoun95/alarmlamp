@@ -1,6 +1,7 @@
 import watchdog.events 
 import watchdog.observers 
 import time 
+import json
 
 
 class Handler(watchdog.events.PatternMatchingEventHandler): 
@@ -10,12 +11,16 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 															ignore_directories=True, case_sensitive=False) 
 
 	def on_created(self, event): 
-		print("Watchdog received created event - % s." % event.src_path) 
+		print(f"Watchdog received created event - {event.src_path}") 
 		# Event is created, you can process it now 
 
 	def on_modified(self, event): 
-		print("Watchdog received modified event - % s." % event.src_path) 
+		print(f"Watchdog received modified event - {event.src_path}") 
 		# Event is modified, you can process it now 
+
+		with open (event.src_path, 'r') as time_file:
+			time = time_file.read()
+		print(json.loads(time))
 
 
 if __name__ == "__main__": 
