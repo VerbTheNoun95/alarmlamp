@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 import watchdog.events 
 import watchdog.observers 
 import time 
