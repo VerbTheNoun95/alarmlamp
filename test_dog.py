@@ -7,8 +7,7 @@ import json
 class Handler(watchdog.events.PatternMatchingEventHandler): 
 	def __init__(self): 
 		# Set the patterns for PatternMatchingEventHandler 
-		watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=['*.json'], 
-															ignore_directories=True, case_sensitive=False) 
+		watchdog.events.PatternMatchingEventHandler.__init__(self, patterns=['*.json'], ignore_directories=True, case_sensitive=False) 
 
 	def on_created(self, event): 
 		print(f"Watchdog received created event - {event.src_path}") 
