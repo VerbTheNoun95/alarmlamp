@@ -22,6 +22,7 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 		with open (event.src_path, 'r') as time_file:
 			time = time_file.read()
 		print(json.loads(time))
+                import strip_test
 
 
 if __name__ == "__main__": 
