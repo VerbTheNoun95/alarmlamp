@@ -23,7 +23,7 @@ class Handler(watchdog.events.PatternMatchingEventHandler):
 
 
 if __name__ == "__main__": 
-	src_path = "/home/alex/repos/python/alarmlamp/flask"
+	src_path = "flask"
 	event_handler = Handler() 
 	observer = watchdog.observers.Observer() 
 	observer.schedule(event_handler, path=src_path, recursive=True) 
