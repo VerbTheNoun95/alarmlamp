@@ -6,6 +6,8 @@ import time
 from time import sleep
 from datetime import datetime
 
+from alarm_sequence import sequence, off
+
 
 app = Flask(__name__)
 
@@ -40,7 +42,7 @@ if os.path.exists("time.json"):
 
     start_date = "{} {}:{}:00".format(get_date(), hour, minute)
     print(start_date)
-    sched.add_job(hello, trigger='interval', seconds=10, id='alarm', start_date=start_date)
+    #sched.add_job(sequence, trigger='interval', days=1, id='alarm', start_date=start_date)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
@@ -57,11 +59,11 @@ def time():
             json.dump(output, outfile)
 
         if hour != None and minute != None:
-            sched.remove_job('alarm')
+            sched.remove_all_jobs()
 
             start_date = "{} {}:{}:00".format(get_date(), hour, minute)
             print(start_date)
-            sched.add_job(hello, trigger='interval', seconds=10, id='alarm', start_date=start_date)
+            sched.add_job(sequence, trigger='interval', days=1, id='alarm', start_date=start_date)
 
             return render_template("dropdown.html", hours=hours, minutes=minutes, hour=hour, minute=minute)
 
