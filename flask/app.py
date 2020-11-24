@@ -9,6 +9,7 @@ from datetime import datetime
 from alarm_sequence import sequence, off
 
 
+off()
 app = Flask(__name__)
 
 hours = [ '0' + str(i) if len(str(i)) == 1 else str(i) for i in list(range(0,24)) ]
@@ -17,20 +18,23 @@ minutes = [ '0' + str(i) if len(str(i)) == 1 else str(i) for i in list(range(0,6
 sched = BackgroundScheduler(daemon=True)
 sched.start()
 
-def get_date(verbose=False):
+def get_date(hour=None, minute=None):
+    print(int(hour), int(minute))
     year = datetime.date(datetime.now()).year
     month = datetime.date(datetime.now()).month
     day = datetime.date(datetime.now()).day
+    print(datetime.now().hour)
+    print(datetime.now().minute)
+    print(day)
 
-    if verbose == True:
-        print(year, month, day)
+    if int(hour) == datetime.now().hour and int(minute) <= datetime.now().minute:
+        day += 1
+        print(day)
+    elif int(hour) < datetime.now().hour:
+        day += 1
+        print(day)
 
     return("{}-{}-{}".format(year, month, day))
-
-def hello():
-    for i in range(0,5):
-        print(i)
-        sleep(1)
 
 if os.path.exists("time.json"):
     with open('time.json', 'r') as time_file:
@@ -40,7 +44,7 @@ if os.path.exists("time.json"):
     hour = time['hour']
     minute = time['minute']
 
-    start_date = "{} {}:{}:00".format(get_date(), hour, minute)
+    start_date = "{} {}:{}:00".format(get_date(hour, minute), hour, minute)
     print(start_date)
     #sched.add_job(sequence, trigger='interval', days=1, id='alarm', start_date=start_date)
 
@@ -61,7 +65,7 @@ def time():
         if hour != None and minute != None:
             sched.remove_all_jobs()
 
-            start_date = "{} {}:{}:00".format(get_date(), hour, minute)
+            start_date = "{} {}:{}:00".format(get_date(hour, minute), hour, minute)
             print(start_date)
             sched.add_job(sequence, trigger='interval', days=1, id='alarm', start_date=start_date)
 

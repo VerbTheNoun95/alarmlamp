@@ -4,7 +4,7 @@ from time import sleep
 
 led = LEDStrip(32, True)
 
-def sequence(wait=0.01):
+def sequence(wait=0.1):
 
     for r in range(0,256):
         led.fillRGB(r,0,0)
