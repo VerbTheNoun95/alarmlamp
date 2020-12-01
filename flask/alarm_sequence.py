@@ -1,8 +1,10 @@
 from raspledstrip.ledstrip import *
 from time import sleep
+from gpiozero import Button
 
 
 led = LEDStrip(32, True)
+button = Button(2)
 
 def sequence(wait=0.1):
 
@@ -24,13 +26,22 @@ def sequence(wait=0.1):
         #print(f"Blue: {b}")
         sleep(wait)
 
-    input("Please turn off the lights")
+    print("Please turn off the lights")
+    button.wait_for_press()
+    print("Turning off...")
     off()
+    #while True:
+    #    try:
+    #        off()
+    #        sleep(1)
+    #    except KeyboardInterrupt:
+    #        break
 
 def off():
     led.fillRGB(0,0,0)
     led.update()
 
 if __name__ == "__main__":
-    sequence()
+    sequence(wait=0.05)
+    led.all_off()
 
