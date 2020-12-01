@@ -19,13 +19,10 @@ sched = BackgroundScheduler(daemon=True)
 sched.start()
 
 def get_date(hour=None, minute=None):
-    print(int(hour), int(minute))
+
     year = datetime.date(datetime.now()).year
     month = datetime.date(datetime.now()).month
     day = datetime.date(datetime.now()).day
-    print(datetime.now().hour)
-    print(datetime.now().minute)
-    print(day)
 
     if int(hour) == datetime.now().hour and int(minute) <= datetime.now().minute:
         day += 1
@@ -33,6 +30,23 @@ def get_date(hour=None, minute=None):
     elif int(hour) < datetime.now().hour:
         day += 1
         print(day)
+
+    try:
+        datetime(year, month, day)
+    except ValueError:
+        try:
+            datetime(year, month + 1, 1)
+            month += 1
+            day = 1
+        except ValueError:
+            try:
+                datetime(year + 1, 1, 1)
+                year += 1
+                month = 1
+                day = 1
+            except:
+                print(f"Something wrong with date {year}:{month}:{day}")
+                pass
 
     return("{}-{}-{}".format(year, month, day))
 
