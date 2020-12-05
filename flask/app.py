@@ -4,7 +4,7 @@ import json
 import os
 import time
 from time import sleep
-from datetime import datetime
+from datetime import datetime, timedelta
 
 from alarm_sequence import sequence, off
 
@@ -19,6 +19,8 @@ sched = BackgroundScheduler(daemon=True)
 sched.start()
 
 def get_date(hour=None, minute=None):
+
+    diff = timedelta(minutes=30)
 
     year = datetime.date(datetime.now()).year
     month = datetime.date(datetime.now()).month
@@ -48,7 +50,11 @@ def get_date(hour=None, minute=None):
                 print(f"Something wrong with date {year}:{month}:{day}")
                 pass
 
-    return("{}-{}-{}".format(year, month, day))
+    start_time = datetime(year, month, day, int(hour), int(minute)) - diff
+    start_hour = start_time.hour
+    start_minute = start_time.minute
+
+    return("{}-{}-{} {}:{}:00".format(year, month, day, start_hour, start_minute))
 
 if os.path.exists("time.json"):
     with open('time.json', 'r') as time_file:
@@ -58,16 +64,19 @@ if os.path.exists("time.json"):
     hour = time['hour']
     minute = time['minute']
 
-    start_date = "{} {}:{}:00".format(get_date(hour, minute), hour, minute)
+    start_date = get_date(hour, minute)
     print(start_date)
     #sched.add_job(sequence, trigger='interval', days=1, id='alarm', start_date=start_date)
 
 @app.route('/', methods=['GET', 'POST'])
 def index():
+    off()
     return render_template("dropdown.html", hours=hours, minutes=minutes)
 
 @app.route('/time', methods=['GET', 'POST'])
 def time():
+
+    off()
 
     if request.method == "POST":
         hour = request.form.get("hours", None)
@@ -79,7 +88,7 @@ def time():
         if hour != None and minute != None:
             sched.remove_all_jobs()
 
-            start_date = "{} {}:{}:00".format(get_date(hour, minute), hour, minute)
+            start_date = get_date(hour, minute)
             print(start_date)
             sched.add_job(sequence, trigger='interval', days=1, id='alarm', start_date=start_date)
 

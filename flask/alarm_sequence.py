@@ -7,18 +7,21 @@ led = LEDStrip(32, True)
 button = Button(2)
 
 def off():
-    led.fillRGB(0,0,0)
+    led.fillRGB(0,0,0, start=0, end=-1)
+    led.update()
+    led.fillRGB(0,0,0, start=0, end=-1)
     led.update()
     exit
 
 #button.when_pressed = off
 
-def sequence(wait=(1800 / 765)):
-
+wait = 1800 / 765
+def sequence(wait=wait):
+    
     for r in range(0,256):
         led.fillRGB(r,0,0)
         if button.is_pressed:
-            off
+            off()
             break
         else:
             led.update()
@@ -46,16 +49,19 @@ def sequence(wait=(1800 / 765)):
         sleep(wait)
 
     print("Please turn off the lights")
-    button.wait_for_press()
-    print("Turning off...")
-    off()
-    #while True:
-    #    try:
-    #        off()
-    #        sleep(1)
-    #    except KeyboardInterrupt:
-    #        break
+    #button.wait_for_press()
+    #print("Turning off...")
+    #off()
 
+    i = 0
+    while i < 600:
+
+        if button.is_pressed:
+            off()
+
+        sleep(1)
+
+    off()
 
 if __name__ == "__main__":
     sequence(wait=0.05)
